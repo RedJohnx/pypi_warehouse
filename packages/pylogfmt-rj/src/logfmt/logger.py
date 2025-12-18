@@ -6,7 +6,7 @@ import sys
 from datetime import datetime
 from enum import IntEnum
 from typing import Any, Optional, TextIO
-
+import json
 
 class LogLevel(IntEnum):
     DEBUG = 10
@@ -85,15 +85,31 @@ class Logger:
             name: Logger name (shown in output)
             level: Minimum log level
             colorize: Enable colored output
-            output: Output stream (default: stderr)
+            output: Output stream OR format selector ("logfmt" | "json")
             timestamp: Show timestamps
         """
         self.name = name
         self.level = level
-        self.colorize = colorize and self._supports_color(output)
-        self.output = output
         self.timestamp = timestamp
-    
+
+        # --- NEW: normalize output & format ---
+        self.format = "logfmt"
+
+        if isinstance(output, str):
+            if output not in ("logfmt", "json"):
+                raise TypeError(
+                    "output must be a file-like object or one of: 'logfmt', 'json'"
+                )
+            self.format = output
+            self.output = sys.stderr  # default stream
+        else:
+            self.output = output
+
+        # color support must be checked AFTER stream is known
+        self.colorize = colorize and self._supports_color(self.output)
+
+
+
     def _supports_color(self, stream: TextIO) -> bool:
         """Check if the stream supports colors."""
         if not hasattr(stream, "isatty"):
@@ -159,14 +175,29 @@ class Logger:
         
         return " ".join(parts)
     
+    def _format_json(self, level: LogLevel, message: str, **kwargs: Any) -> str:
+        record = {
+            "logger": self.name,
+            "level": level.name.lower(),
+            "msg": message,
+            "fields": kwargs,
+        }
+        if self.timestamp:
+            record["ts"] = datetime.now().isoformat(timespec="seconds")
+        return json.dumps(record, ensure_ascii=False, default=str)   
+     
     def _log(self, level: LogLevel, message: str, **kwargs: Any) -> None:
         """Internal logging method."""
         if level < self.level:
             return
         
-        formatted = self._format_message(level, message, **kwargs)
+        if self.format == "json":
+            formatted = self._format_json(level, message, **kwargs)
+        else:
+            formatted = self._format_message(level, message, **kwargs)
+
         print(formatted, file=self.output)
-    
+            
     def debug(self, message: str, **kwargs: Any) -> None:
         """Log a debug message."""
         self._log(LogLevel.DEBUG, message, **kwargs)
