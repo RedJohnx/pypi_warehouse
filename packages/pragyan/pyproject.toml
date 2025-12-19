@@ -1,0 +1,93 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pragyan"
+version = "1.0.5"
+description = "AI-powered DSA question solver with video explanations using Manim animations"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.9"
+authors = [
+    {name = "Kamal", email = "kamal@example.com"}
+]
+keywords = [
+    "dsa",
+    "leetcode",
+    "algorithms",
+    "data-structures",
+    "ai",
+    "video-generation",
+    "manim",
+    "education"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Education",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "google-generativeai>=0.3.0",
+    "groq>=0.4.0",
+    "langchain>=0.1.0",
+    "langchain-community>=0.0.10",
+    "beautifulsoup4>=4.12.0",
+    "requests>=2.31.0",
+    "selenium>=4.15.0",
+    "webdriver-manager>=4.0.0",
+    "manim>=0.18.0",
+    "moviepy>=1.0.3",
+    "Pillow>=10.0.0",
+    "numpy>=1.24.0",
+    "click>=8.1.0",
+    "rich>=13.0.0",
+    "pydantic>=2.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "mypy>=1.0.0",
+]
+
+[project.scripts]
+pragyan = "pragyan.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/Kamalllx/pragyan_pypi"
+Documentation = "https://github.com/Kamalllx/pragyan_pypi#readme"
+Repository = "https://github.com/Kamalllx/pragyan_pypi"
+Issues = "https://github.com/Kamalllx/pragyan_pypi/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.black]
+line-length = 100
+target-version = ['py39', 'py310', 'py311', 'py312']
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true

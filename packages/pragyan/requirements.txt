@@ -1,0 +1,25 @@
+# Core dependencies
+google-generativeai>=0.3.0
+groq>=0.4.0
+langchain>=0.1.0
+langchain-community>=0.0.10
+beautifulsoup4>=4.12.0
+requests>=2.31.0
+selenium>=4.15.0
+webdriver-manager>=4.0.0
+
+# Video generation
+manim>=0.18.0
+moviepy>=1.0.3
+Pillow>=10.0.0
+numpy>=1.24.0
+
+# CLI
+click>=8.1.0
+rich>=13.0.0
+
+# Data validation
+pydantic>=2.0.0
+
+# Environment
+python-dotenv>=1.0.0
