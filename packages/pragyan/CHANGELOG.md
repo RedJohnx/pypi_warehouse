@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [1.0.6] - 2024-12-19
+
+### 🐛 Critical Bug Fix
+- **Completely rewrote code deduplication algorithm** to properly handle sliding window repetition patterns
+- New multi-stage deduplication approach:
+  - Detects code block boundaries (class/function definitions)
+  - Checks for repeated significant lines
+  - Validates code completeness before truncation
+- Added `_is_complete_code()` helper to ensure code blocks are complete
+
+### 📦 Repository
+- Added pragyan to pypi_warehouse collection repository
+- Updated README with all PyPI package links
+
+---
+
 ## [1.0.5] - 2024-12-18
 
 ### 🎬 Major Video Overhaul
