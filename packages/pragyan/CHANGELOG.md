@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [1.0.8] - 2024-12-19
+
+### 🐛 Critical Bug Fix
+- **Fixed video generation crash**: `name 'i' is not defined`
+- Root cause: The entire Manim scene code was inside a Python f-string, causing loop variables (`i`, `j`, etc.) to be interpreted as f-string placeholders
+- Solution: Split the scene code into a header (with f-string substitutions for data) and a body (regular string with no f-string processing)
+- Simplified and cleaned up the video generator code
+
+---
+
 ## [1.0.7] - 2024-12-19
 
 ### 🐛 Bug Fix

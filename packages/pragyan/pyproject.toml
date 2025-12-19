@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pragyan"
-version = "1.0.7"
+version = "1.0.8"
 description = "AI-powered DSA question solver with video explanations using Manim animations"
 readme = "README.md"
 license = "MIT"
