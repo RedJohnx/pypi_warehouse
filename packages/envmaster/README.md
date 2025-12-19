@@ -1,6 +1,6 @@
 # envmaster 🔐
 
-Type-safe environment variable management for Python.
+Type-safe environment variable management for Python with `.env` file support.
 
 ## Installation
 
@@ -9,6 +9,23 @@ pip install envmaster
 ```
 
 ## Usage
+
+### Load from .env file
+
+```python
+from envmaster import env
+
+# Load .env file automatically
+env.load_dotenv()  # Loads .env from current directory
+
+# Or specify a path
+env.load_dotenv(".env.production")
+
+# Override existing environment variables
+env.load_dotenv(override=True)
+```
+
+### Access environment variables
 
 ```python
 from envmaster import env
@@ -32,10 +49,28 @@ ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost"])
 CONFIG = env.json("CONFIG", default={})
 ```
 
+## .env File Format
+
+```bash
+# Database configuration
+DATABASE_URL=postgresql://localhost/mydb
+DB_PORT=5432
+
+# App settings
+DEBUG=true
+MAX_CONNECTIONS=10
+ALLOWED_HOSTS=localhost,example.com
+
+# Quotes are optional
+API_KEY="sk-1234567890"
+APP_NAME='My Application'
+```
+
 ## Methods
 
 | Method | Return Type | Description |
 |--------|-------------|-------------|
+| `env.load_dotenv()` | bool | Load .env file |
 | `env.str()` | str | String value |
 | `env.int()` | int | Integer value |
 | `env.float()` | float | Float value |

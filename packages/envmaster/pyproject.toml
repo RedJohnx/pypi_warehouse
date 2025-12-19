@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "envmaster"
-version = "1.0.0"
-description = "Type-safe environment variable management"
+version = "1.1.0"
+description = "Type-safe environment variable management with .env file support"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.8"

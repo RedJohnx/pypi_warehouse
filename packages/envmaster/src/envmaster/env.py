@@ -3,6 +3,7 @@ Type-safe environment variable management.
 """
 
 import os
+from pathlib import Path
 from typing import Optional, List, TypeVar, Type, Any
 
 T = TypeVar('T')
@@ -24,6 +25,56 @@ class EnvManager:
         DEBUG = env.bool("DEBUG", default=False)
         MAX_CONNECTIONS = env.int("MAX_CONNECTIONS", default=10)
     """
+    
+    def __init__(self):
+        """Initialize the environment manager."""
+        self._loaded_files = []
+    
+    def load_dotenv(self, dotenv_path: Optional[str] = None, override: bool = False) -> bool:
+        """
+        Load environment variables from a .env file.
+        
+        Args:
+            dotenv_path: Path to .env file (default: .env in current directory)
+            override: If True, override existing environment variables
+        
+        Returns:
+            True if file was loaded, False if not found
+        """
+        if dotenv_path is None:
+            dotenv_path = ".env"
+        
+        env_file = Path(dotenv_path)
+        
+        if not env_file.exists():
+            return False
+        
+        with open(env_file, 'r', encoding='utf-8') as f:
+            for line_num, line in enumerate(f, 1):
+                line = line.strip()
+                
+                # Skip empty lines and comments
+                if not line or line.startswith('#'):
+                    continue
+                
+                # Parse KEY=VALUE format
+                if '=' not in line:
+                    continue
+                
+                key, _, value = line.partition('=')
+                key = key.strip()
+                value = value.strip()
+                
+                # Remove quotes if present
+                if value and value[0] == value[-1] and value[0] in ('"', "'"):
+                    value = value[1:-1]
+                
+                # Set in environment
+                if override or key not in os.environ:
+                    os.environ[key] = value
+        
+        self._loaded_files.append(str(env_file.absolute()))
+        return True
     
     def str(
         self,
